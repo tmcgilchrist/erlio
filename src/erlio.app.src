@@ -1,0 +1,16 @@
+{application, erlio,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  inets,
+                  crypto,
+                  mochiweb,
+                  webmachine
+                 ]},
+  {mod, { erlio_app, []}},
+  {env, []}
+ ]}.
