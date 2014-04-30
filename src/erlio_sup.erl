@@ -26,7 +26,6 @@ init([]) ->
     %% Setup Webmachine
     Ip =  "0.0.0.0",
     Dispatch = load_wm_resources(),
-    io:format("Dispatch: [~p]~n", [Dispatch]),
     WebConfig = [ {ip, Ip},
                   {port, 8000},
                   {log_dir, "priv/log"},
@@ -45,5 +44,6 @@ init([]) ->
 
 
 load_wm_resources() ->
-    Resources = [erlio_link_resource],
+    Resources = [erlio_links_resource,
+                 erlio_link_resource],
     lists:flatten([Module:routes() || Module <- Resources]).
