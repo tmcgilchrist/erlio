@@ -13,7 +13,7 @@ init([]) ->
     {ok, #context{}}.
 
 routes() ->
-    [{["links"], ?MODULE, []}]. %% GET /link/:id
+    [{["links"], ?MODULE, []}].
 
 allowed_methods(ReqData, Context) ->
     {['POST'], ReqData, Context}.
@@ -29,7 +29,6 @@ create_path(ReqData, _Context) ->
     {struct,[{<<"url">>, Url}]} = mochijson2:decode(Attributes),
     Id = generate_id(Url),
     Resource = "/link/" ++ Id,
-
     NewContext = #context{id=Id, url=Url},
     {Resource, ReqData, NewContext}.
 

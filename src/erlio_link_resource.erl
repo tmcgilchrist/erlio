@@ -7,11 +7,10 @@
 -record(context, {link}).
 
 init([]) ->
-    %% Do initialisation stuff here
     {ok, #context{}}.
 
 routes() ->
-    [{["link", link_id], ?MODULE, []}]. %% GET /link/:id
+    [{["link", link_id], ?MODULE, []}].
 
 content_types_provided(ReqData, Context) ->
     {[{"application/json", to_json}], ReqData, Context}.
