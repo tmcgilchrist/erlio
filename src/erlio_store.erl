@@ -2,7 +2,7 @@
 
 -behaviour(gen_server).
 
--export([start/0, start_link/0, lookup_link/1]).
+-export([start/0, start_link/0, lookup_link/1, link_exists/1]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3,
@@ -27,6 +27,9 @@ start_link() ->
 lookup_link(Id) ->
     gen_server:call(erlio_store, {lookup_link, Id}).
 
+link_exists(Id) ->
+    gen_server:call(erlio_store, {link_exists, Id}).
+
 
 %% =========================================================================================
 %% gen_server Callbacks
@@ -46,6 +49,13 @@ handle_call({lookup_link, Id}, _From, State) ->
         [{_Key, Link}] ->
             Reply = {ok, Link},
             {reply, Reply, State}
+    end;
+handle_call({link_exists, Id}, _From, State) ->
+    case ets:lookup(links, Id) of
+        [] ->
+            {reply, false, State};
+        [{_Key, _Link}] ->
+            {reply, true, State}
     end;
 
 handle_call(_Request, _From, State) ->

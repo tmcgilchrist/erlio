@@ -1,10 +1,10 @@
 -module(erlio_link_resource).
 
--export([init/1, routes/0, content_types_provided/2, allowed_methods/2, to_json/2]).
+-export([init/1, routes/0, content_types_provided/2, allowed_methods/2, to_json/2, resource_exists/2]).
 
 -include_lib("webmachine/include/webmachine.hrl").
 
--record(context, {}).
+-record(context, {link}).
 
 init([]) ->
     %% Do initialisation stuff here
@@ -18,6 +18,11 @@ content_types_provided(ReqData, Context) ->
 
 allowed_methods(ReqData, Context) ->
     {['GET'], ReqData, Context}.
+
+resource_exists(ReqData, Context) ->
+    Id = wrq:path_info(link_id, ReqData),
+    %% TODO This could be cached on the #context
+    {erlio_store:link_exists(Id), ReqData, Context}.
 
 to_json(ReqData, Context) ->
     Id = wrq:path_info(link_id, ReqData),
