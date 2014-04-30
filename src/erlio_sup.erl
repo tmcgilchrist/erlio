@@ -23,9 +23,6 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    _ = create_table(),
-    _ = seed_links(),
-
     %% Setup Webmachine
     Ip =  "0.0.0.0",
     Dispatch = load_wm_resources(),
@@ -38,27 +35,13 @@ init([]) ->
            {webmachine_mochiweb, start, [WebConfig]},
            permanent, 5000, worker, [mochiweb_socket_server]},
 
-    Children = [Web],
+    Store = {erlio_store,
+             {erlio_store, start_link, []},
+             permanent, 5000, worker, [erlio_store]},
+
+    Children = [Web, Store],
 
     {ok, {{one_for_one, 1, 1}, Children}}.
-
-
-create_table() ->
-    ets:new(links, [public,
-                    ordered_set,
-                    named_table,
-                    {read_concurrency, true},
-                    {write_concurrency, true}]).
-
-seed_links() ->
-    ets:insert(links, [
-                       {"1",
-                        [{url, <<"http://erlang.com">>},
-                         {hits, <<"0">>}]},
-                       {"2",
-                        [{url, <<"http://www.openbsd.org">>},
-                         {hits, <<"0">>}]}
-                       ]).
 
 
 load_wm_resources() ->
