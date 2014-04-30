@@ -1,7 +1,8 @@
 {application, erlio,
  [
-  {description, ""},
+  {description, "erlio"},
   {vsn, "1"},
+  {modules, []},
   {registered, []},
   {applications, [
                   kernel,
