@@ -23,11 +23,12 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
+    _ = create_table(),
+    _ = seed_links(),
 
     %% Setup Webmachine
     Ip =  "0.0.0.0",
     Dispatch = load_wm_resources(),
-
     io:format("Dispatch: [~p]~n", [Dispatch]),
     WebConfig = [ {ip, Ip},
                   {port, 8000},
@@ -41,7 +42,25 @@ init([]) ->
 
     {ok, {{one_for_one, 1, 1}, Children}}.
 
+
+create_table() ->
+    ets:new(links, [public,
+                    ordered_set,
+                    named_table,
+                    {read_concurrency, true},
+                    {write_concurrency, true}]).
+
+seed_links() ->
+    ets:insert(links, [
+                       {"1",
+                        [{url, <<"http://erlang.com">>},
+                         {hits, <<"0">>}]},
+                       {"2",
+                        [{url, <<"http://www.openbsd.org">>},
+                         {hits, <<"0">>}]}
+                       ]).
+
+
 load_wm_resources() ->
-    Resources = [erlio_wm_link_resource,
-                 erlio_wm_asset_resource],
+    Resources = [erlio_link_resource],
     lists:flatten([Module:routes() || Module <- Resources]).
