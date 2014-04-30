@@ -28,7 +28,8 @@ routes() ->
     [
      {["javascripts"], ?MODULE, []},
      {["stylesheets"], ?MODULE, []},
-     {['*'], ?MODULE, []}
+     {["images"], ?MODULE, []},
+     {['*'], ?MODULE, []}            %% Accept anything, but we restrict in identify_resource to only index.html
     ].
 
 %% @doc Handle serving of the single page application.
@@ -66,7 +67,6 @@ normalize_filepath(Filepath) ->
 -spec identify_resource(wrq:reqdata(), #context{}) ->
     {boolean(), #context{}}.
 identify_resource(ReqData, #context{filename=undefined}=Context) ->
-    io:format("disp_path: ~p~n", [wrq:disp_path(ReqData)]),
     case wrq:disp_path(ReqData) of
         [] ->
             Filename = normalize_filepath(["index.html"]),
