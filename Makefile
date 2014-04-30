@@ -1,7 +1,7 @@
 ERL		?= erl
 ERLC		= erlc
 EBIN_DIRS	:= $(wildcard deps/*/ebin)
-APPS		:= $(shell dir apps)
+APPS		:= $(shell ls src)
 REL_DIR     	= rel
 NODE		= {{name}}
 REL		= {{name}}
@@ -13,6 +13,9 @@ all: deps compile
 
 compile: deps
 	@rebar compile
+
+shell:
+	@erl -pa ebin include deps/*/ebin deps/*/include ebin include -boot start_sasl -s reloader -s erlio
 
 deps:
 	@rebar get-deps
@@ -53,12 +56,6 @@ reboot: $(SCRIPT_PATH)
 
 doc:
 	rebar skip_deps=true doc
-	for app in $(APPS); do \
-		cp -R apps/$${app}/doc doc/$${app}; \
-	done;
-
-dev:
-	@erl -pa ebin include deps/*/ebin deps/*/include ebin include -boot start_sasl
 
 analyze: checkplt
 	@rebar skip_deps=true dialyze
