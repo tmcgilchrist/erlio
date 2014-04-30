@@ -21,19 +21,11 @@ allowed_methods(ReqData, Context) ->
 
 to_json(ReqData, Context) ->
     Id = wrq:path_info(link_id, ReqData),
-    case maybe_link(Id) of
+    case erlio_store:lookup_link(Id) of
         {ok, Link} ->
             Response = mochijson2:encode({struct, Link}),
             {Response, ReqData, Context};
         {not_found} ->
             Response = mochijson2:encode({struct, []}),
             {Response, ReqData, Context}
-    end.
-
-maybe_link(LinkId) ->
-    case ets:lookup(links, LinkId) of
-        [] ->
-            {not_found};
-        [{_Key, Link}] ->
-            {ok, Link}
     end.

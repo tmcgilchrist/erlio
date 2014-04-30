@@ -19,11 +19,9 @@
 %% =========================================================================================
 
 start() ->
-    io:format("Starting erlio_store ..........~n~n", []),
     gen_server:start(?MODULE, [], []).
 
 start_link() ->
-    io:format("Start-linking erlio_store ..........~n~n", []),
     gen_server:start_link({local, erlio_store}, ?MODULE, [], []).
 
 lookup_link(Id) ->
@@ -41,7 +39,6 @@ init([]) ->
 
     {ok, #state{}}.
 handle_call({lookup_link, Id}, _From, State) ->
-    io:format("Handle_call lookup_link~n", []),
     case ets:lookup(links, Id) of
         [] ->
             Reply = {not_found},
