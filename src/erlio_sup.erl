@@ -1,5 +1,4 @@
 -module(erlio_sup).
-
 -behaviour(supervisor).
 
 %% API
@@ -8,20 +7,15 @@
 %% Supervisor callbacks
 -export([init/1]).
 
-%% Helper macro for declaring children of supervisor
--define(CHILD(I, Type), {I, {I, start_link, []}, permanent, 5000, Type, [I]}).
-
 %% ===================================================================
 %% API functions
 %% ===================================================================
-
 start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 %% ===================================================================
 %% Supervisor callbacks
 %% ===================================================================
-
 init([]) ->
     %% Setup Webmachine
     Ip =  "0.0.0.0",
@@ -38,7 +32,12 @@ init([]) ->
              {erlio_store, start_link, []},
              permanent, 5000, worker, [erlio_store]},
 
-    Children = [Web, Store],
+    %% This is the publish-subscribe process, a gen_event.
+    Events = {erlio_stats,
+              {erlio_stats, start_link, []},
+              permanent, 5000, worker, [erlio_stats]},
+
+    Children = [Web, Store, Events],
 
     {ok, {{one_for_one, 1, 1}, Children}}.
 
