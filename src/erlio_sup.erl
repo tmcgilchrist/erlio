@@ -42,9 +42,8 @@ init([]) ->
     {ok, {{one_for_one, 1, 1}, Children}}.
 
 load_wm_resources() ->
-    Resources = [erlio_links_resource,
-                 erlio_link_resource,
-                 erlio_assets_resource,
-                 erlio_short_resource
+    Resources = [erlio_links_resource
+                 , erlio_link_resource
+                 , erlio_assets_resource
                 ],
     lists:flatten([Module:routes() || Module <- Resources]).

@@ -7,6 +7,8 @@
          generate_etag/2,
          last_modified/2,
          resource_exists/2,
+         previously_existed/2,
+         moved_temporarily/2,
          content_types_provided/2]).
 
 -include_lib("webmachine/include/webmachine.hrl").
@@ -15,23 +17,25 @@
 -record(context, {filename,
                   fileinfo,
                   rendered,
-                  token}).
+                  token,
+                  id}).
 
 %% @doc Initialize the resource.
 -spec init([]) -> {ok, #context{}}.
 init([]) ->
-    {ok, #context{}}.
+    {{trace, "traces"}, #context{}}.  %% debugging code
+    %% {ok, #context{}}.
 
 
 %% @doc Return the routes this module should respond to.
 -spec routes() -> [webmachine_dispatcher:matchterm()].
 routes() ->
-    [
+    [{["dev", "wmtrace", '*'], wmtrace_resource, [{trace_dir, "traces"}]},
      {["javascripts"], ?MODULE, []},
      {["stylesheets"], ?MODULE, []},
-     {["images"], ?MODULE, []}
+     {["images"], ?MODULE, []},
      %% , This should be move to the short_resource
-     %% {['*'], ?MODULE, []}            %% Accept anything, but we restrict in identify_resource to only index.html
+     {['*'], ?MODULE, []}            %% Accept anything, but we restrict in identify_resource to only index.html
     ].
 
 %% @doc Handle serving of the single page application.
@@ -102,6 +106,22 @@ resource_exists(ReqData, Context) ->
             end
     end.
 
+-spec previously_existed(wrq:reqdata(), #context{}) ->
+    {boolean(), wrq:reqdata(), #context{}}.
+previously_existed(ReqData, _Context) ->
+    Id = get_key(ReqData),
+    NewContext = #context{id=Id},
+    {erlio_store:link_exists(Id), ReqData, NewContext}.
+
+-spec moved_temporarily(wrq:reqdata(), #context{}) ->
+      {{halt, 302}, string(), #context{}}.
+moved_temporarily(ReqData, Context=#context{id=Id}) ->
+    {ok, Link} = erlio_store:lookup_link(Id),
+    Url = binary_to_list(proplists:get_value(url, Link)),
+    {{halt, 302},
+     wrq:set_resp_header("Location", Url, ReqData),
+     Context}.
+
 %% @doc Return the proper content type of the file, or default to
 %%      text/html.
 -spec content_types_provided(wrq:reqdata(), #context{}) ->
@@ -141,3 +161,9 @@ priv_dir(Mod) ->
         PrivDir ->
             PrivDir
     end.
+
+get_key(ReqData) ->
+    binary_to_list(iolist_to_binary(remove_slash(wrq:path(ReqData)))).
+
+remove_slash(Path) ->
+    re:replace(Path, "^\/", "").
