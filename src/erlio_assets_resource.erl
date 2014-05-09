@@ -23,19 +23,16 @@
 %% @doc Initialize the resource.
 -spec init([]) -> {ok, #context{}}.
 init([]) ->
-    {{trace, "traces"}, #context{}}.  %% debugging code
-    %% {ok, #context{}}.
-
+    {ok, #context{}}.
 
 %% @doc Return the routes this module should respond to.
 -spec routes() -> [webmachine_dispatcher:matchterm()].
 routes() ->
-    [{["dev", "wmtrace", '*'], wmtrace_resource, [{trace_dir, "traces"}]},
+    [
      {["javascripts"], ?MODULE, []},
      {["stylesheets"], ?MODULE, []},
      {["images"], ?MODULE, []},
-     %% , This should be move to the short_resource
-     {['*'], ?MODULE, []}            %% Accept anything, but we restrict in identify_resource to only index.html
+     {['*'], ?MODULE, []}
     ].
 
 %% @doc Handle serving of the single page application.
