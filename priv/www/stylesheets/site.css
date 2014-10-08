@@ -193,7 +193,7 @@ input.active {
   -webkit-box-shadow: 0 1px 0 #6a8290, 0 1px 3px #6a8290 inset;
   -moz-box-shadow: 0 1px 0 #6a8290, 0 1px 3px #6a8290 inset;
   box-shadow: 0 1px 0 #6a8290, 0 1px 3px #6a8290 inset;
-  font-size: 22px;
+  font-size: 16px;
   left: 100px;
   letter-spacing: -1px;
   padding: 10px;
@@ -210,14 +210,14 @@ input.active {
   -webkit-box-shadow: 0 1px 0 #4a5a63, 0 1px 3px #6a8290 inset;
   -moz-box-shadow: 0 1px 0 #4a5a63, 0 1px 3px #6a8290 inset;
   box-shadow: 0 1px 0 #4a5a63, 0 1px 3px #6a8290 inset;
-  font-size: 22px;
+  font-size: 16px;
   height: 26px;
   left: 100px;
   letter-spacing: -1px;
   padding: 10px;
   position: absolute;
   top: 16px;
-  width: 214px; }
+  width: 370px; }
 
 button::-moz-focus-inner {
   border: 0;
@@ -293,7 +293,7 @@ button {
   -webkit-box-shadow: 1px 1px 0 #212c33, 0 1px 0 #88d4e5 inset;
   -moz-box-shadow: 1px 1px 0 #212c33, 0 1px 0 #88d4e5 inset;
   box-shadow: 1px 1px 0 #212c33, 0 1px 0 #88d4e5 inset;
-  left: 330px;
+  left: 480px;
   width: 90px; }
   #back button:hover, #back button.hover {
     *zoom: 1;
