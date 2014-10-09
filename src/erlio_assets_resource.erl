@@ -1,7 +1,7 @@
 -module(erlio_assets_resource).
 
+%% webmachine callbacks
 -export([init/1,
-         routes/0,
          to_resource/2,
          allowed_methods/2,
          generate_etag/2,
@@ -10,6 +10,9 @@
          previously_existed/2,
          moved_temporarily/2,
          content_types_provided/2]).
+
+%% API
+-export([routes/0]).
 
 -include_lib("webmachine/include/webmachine.hrl").
 -include_lib("kernel/include/file.hrl").
@@ -20,10 +23,10 @@
                   token,
                   id}).
 
-%% @doc Initialize the resource.
--spec init([]) -> {ok, #context{}}.
-init([]) ->
-    {ok, #context{}}.
+
+%% =========================================================================================
+%% API functions
+%% =========================================================================================
 
 %% @doc Return the routes this module should respond to.
 -spec routes() -> [webmachine_dispatcher:matchterm()].
@@ -34,6 +37,15 @@ routes() ->
      {["images"], ?MODULE, []},
      {['*'], ?MODULE, []}
     ].
+
+%% =========================================================================================
+%% webmachine Callbacks
+%% =========================================================================================
+
+%% @doc Initialize the resource.
+-spec init([]) -> {ok, #context{}}.
+init([]) ->
+    {ok, #context{}}.
 
 %% @doc Handle serving of the single page application.
 -spec allowed_methods(wrq:reqdata(), #context{}) ->
