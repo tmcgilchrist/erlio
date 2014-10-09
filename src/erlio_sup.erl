@@ -44,6 +44,7 @@ init([]) ->
 load_wm_resources() ->
     Resources = [erlio_links_resource
                  , erlio_link_resource
+                 , erlio_stats_resource
                  , erlio_assets_resource
                 ],
     lists:flatten([Module:routes() || Module <- Resources]).
