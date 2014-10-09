@@ -3,7 +3,7 @@
 
 -behaviour(gen_event).
 
--export([start_link/0, add_link/1, access_link/1, add_handler/0]).
+-export([start_link/0, new_link/1, access_link/1, add_handler/0]).
 
 -export([init/1, handle_event/2,
          handle_call/2, handle_info/2,
@@ -14,7 +14,7 @@
 start_link() ->
     gen_event:start_link({local, ?MODULE}).
 
-add_link(Link) ->
+new_link(Link) ->
     gen_event:notify(?MODULE, {link_added, Link}).
 
 access_link(Link) ->
@@ -27,6 +27,7 @@ add_handler() ->
     gen_event:add_sup_handler(?MODULE, ?MODULE, [self()]).
 
 init(_Args) ->
+    add_handler(),
     {ok, #state{}}.
 
 %% Add extra pattern matches here for new messages.
@@ -39,6 +40,7 @@ handle_event({link_accessed, Url}, State) ->
 handle_event(Msg, State) ->
     io:format("***Message*** ~p~n", [Msg]),
     {ok, State}.
+
 handle_call(_Request, State) ->
     Reply = ok,
     {ok, Reply, State}.
