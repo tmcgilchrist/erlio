@@ -49,14 +49,15 @@ Copyright (c) 2012 Tim McGilchrist <timmcgil@gmail.com>.  All rights reserved.
 
 Basic Structure
 ===============
-
+```
 erlio_sup
  |
  \--------------------------------------------------
      |                       |                  |
  webmachine_mochiweb    erlio_store        erlio_events
+```
 
-erlio_sup - the main supervisor under which everything lives
-webmachine_mochiweb - http / REST resources
-erlio_store - datastore that talks to a persistent data store
-erlio_events - out of band event processing, gathering statistics
+ * erlio_sup - the main supervisor under which everything lives
+ * webmachine_mochiweb - http / REST resources
+ * erlio_store - datastore that talks to a persistent data store
+ * erlio_events - out of band event processing, gathering statistics
