@@ -15,6 +15,7 @@ start_link() ->
     ensure_started(ssl),
     ensure_started(xmerl),
     ensure_started(mochiweb),
+
     application:set_env(webmachine, webmachine_logger_module,
                         webmachine_log),
     ensure_started(webmachine),
@@ -32,6 +33,7 @@ start() ->
     ensure_started(ssl),
     ensure_started(xmerl),
     ensure_started(mochiweb),
+
     application:set_env(webmachine, webmachine_logger_module,
                         webmachine_log),
     ensure_started(webmachine),
