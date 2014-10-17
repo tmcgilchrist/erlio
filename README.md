@@ -1,6 +1,6 @@
 # erlio #
 
-Erlang url shortener project.
+Erlang url shortener project, visit [erlio.in](http://erlio.in/).
 
 ## Goals ##
  * webmachine application
