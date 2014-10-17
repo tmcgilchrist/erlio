@@ -8,7 +8,6 @@
 start_link() ->
     ensure_started(compiler),
     ensure_started(syntax_tools),
-    ensure_started(lager),
     ensure_started(inets),
     ensure_started(crypto),
     ensure_started(asn1),
