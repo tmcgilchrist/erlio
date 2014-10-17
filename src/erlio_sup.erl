@@ -18,10 +18,12 @@ start_link() ->
 %% ===================================================================
 init([]) ->
     %% Setup Webmachine
-    Ip =  "0.0.0.0",
+    Ip = case os:getenv("WEBMACHINE_IP") of false -> "0.0.0.0"; Any -> Any end,
     Dispatch = load_wm_resources(),
+    P = case os:getenv("PORT") of false -> "8000"; _Any -> _Any end,
+    Port = list_to_integer(P),
     WebConfig = [ {ip, Ip},
-                  {port, 8000},
+                  {port, Port},
                   {log_dir, "priv/log"},
                   {dispatch, Dispatch}],
     Web = {webmachine_mochiweb,
