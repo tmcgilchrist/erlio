@@ -1,4 +1,6 @@
 ebin/*
 *.beam
 deps/*
-
+TAGS
+_build/*
+.rebar/*
