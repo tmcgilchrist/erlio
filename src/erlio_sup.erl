@@ -18,35 +18,34 @@ start_link() ->
 %% ===================================================================
 init([]) ->
     %% Setup Webmachine
-    Ip = case os:getenv("WEBMACHINE_IP") of false -> "0.0.0.0"; Any -> Any end,
-    Dispatch = load_wm_resources(),
-    P = case os:getenv("PORT") of false -> "8000"; _Any -> _Any end,
-    Port = list_to_integer(P),
-    WebConfig = [ {ip, Ip},
-                  {port, Port},
-                  {log_dir, "priv/log"},
-                  {dispatch, Dispatch}],
-    Web = {webmachine_mochiweb,
-           {webmachine_mochiweb, start, [WebConfig]},
-           permanent, 5000, worker, [mochiweb_socket_server]},
+    Web = #{id => webmachine_mochiweb,
+            start => {webmachine_mochiweb, start, [erlio_config:web_config()]},
+            restart => permanent, 
+            shutdown => 5000, 
+            type => worker, 
+            modules => [mochiweb_socket_server]},
 
-    Store = {erlio_store,
-             {erlio_store, start_link, []},
-             permanent, 5000, worker, [erlio_store]},
+    Store = #{id => erlio_store,
+              start => {erlio_store, start_link, []},
+              restart => permanent, 
+              shutdown => 5000, 
+              type => worker, 
+              modules => [erlio_store]},
 
     %% This is the publish-subscribe process, a gen_event.
-    Events = {erlio_stats,
-              {erlio_stats, start_link, []},
-              permanent, 5000, worker, [erlio_stats]},
+    Events = #{id => erlio_stats,
+               start => {erlio_stats, start_link, []},
+               restart => permanent, 
+               shutdown => 5000, 
+               type => worker, 
+               modules => [erlio_stats]},
 
     Children = [Web, Store, Events],
+    
+    SupFlags = #{strategy => one_for_one,
+                 intensity => 2,
+                 period => 3600
+                },
+    {ok, {SupFlags, Children}}.
 
-    {ok, {{one_for_one, 1, 1}, Children}}.
-
-load_wm_resources() ->
-    Resources = [erlio_links_resource
-                 , erlio_link_resource
-                 , erlio_stats_resource
-                 , erlio_assets_resource
-                ],
-    lists:flatten([Module:routes() || Module <- Resources]).
+ %% p 137

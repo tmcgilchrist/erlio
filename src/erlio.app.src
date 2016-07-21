@@ -1,7 +1,8 @@
+%%-*- mode: erlang -*-
 {application, erlio,
  [
-  {description, "erlio"},
-  {vsn, "1"},
+  {description, "Erlio - Erlang URL shortener."},
+  {vsn, "0.1"},
   {modules, []},
   {registered, []},
   {applications, [
@@ -13,5 +14,8 @@
                   webmachine
                  ]},
   {mod, { erlio_app, []}},
-  {env, []}
+  {env, [
+      {web_ip, "0.0.0.0"},
+      {web_port, 8080}
+  ]}
  ]}.

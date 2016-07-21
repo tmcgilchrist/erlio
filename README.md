@@ -26,6 +26,7 @@ Copyright (c) 2012 Tim McGilchrist <timmcgil@gmail.com>.  All rights reserved.
  * port to use postgres database (*)
  * add goto button on UI to see we get 302 redirect.
  * write out long form blog post as Markdown
+ * checking what gen_S are running
 
  Nice to have:
  * fault tolerance for event handler, how should it's supervisor look, what
