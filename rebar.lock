@@ -11,6 +11,6 @@
        {ref,"5f0d69c831b6c9f52535c3d1846efca480f6190d"}},
   0},
  {<<"webmachine">>,
-  {git,"git://github.com/basho/webmachine.git",
-       {ref,"494d14fa951816051732324bd324019b99dbc2e0"}},
+  {git,"git://github.com/webmachine/webmachine",
+       {ref,"b4758b51c05e8f4e8898a70b7a14514a8c150ffa"}},
   0}].
