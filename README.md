@@ -1,4 +1,5 @@
-# erlio #
+# erlio # 
+![](https://travis-ci.org/tmcgilchrist/erlio.svg?branch=topic%2Ftravis)
 
 Erlang url shortener project, visit [erlio.in](http://erlio.in/).
 
